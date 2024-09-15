@@ -5,6 +5,7 @@ import { CreateUserUseCaseProvider } from './use-cases/create-user.use-case';
 import { UpdateUserUseCaseProvider } from './use-cases/update-user.use-case';
 import { GetAllUserUseCaseProvider } from './use-cases/get-all-user.use-case';
 import { GetOneUserUseCaseProvider } from './use-cases/get-one-user.use-case';
+import { DeleteUserUseCaseProvider } from './use-cases/delete-user.use-case';
 
 @Module({
   controllers: [UserController],
@@ -13,14 +14,16 @@ import { GetOneUserUseCaseProvider } from './use-cases/get-one-user.use-case';
     CreateUserUseCaseProvider,
     UpdateUserUseCaseProvider,
     GetAllUserUseCaseProvider,
-    GetOneUserUseCaseProvider
+    GetOneUserUseCaseProvider,
+    DeleteUserUseCaseProvider
   ],
   exports: [
     UserRepositoryProvider,
     CreateUserUseCaseProvider,
     UpdateUserUseCaseProvider,
     GetAllUserUseCaseProvider,
-    GetOneUserUseCaseProvider
+    GetOneUserUseCaseProvider,
+    DeleteUserUseCaseProvider
   ]
 })
 

@@ -68,6 +68,16 @@ export class UserRepository implements IUserRepository {
     if (user) return this.BuildEntity(user);
   }
 
+  async delete(id: number): Promise<UserEntity> {
+    const deletedUser = await this.prisma.user.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return this.BuildEntity(deletedUser);
+  }
+
   private BuildEntity(payload: User /*& { projects?: Project[] }*/): UserEntity {
     let user = new UserEntity({
       id: payload.id,

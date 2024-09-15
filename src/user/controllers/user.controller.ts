@@ -6,6 +6,7 @@ import { ICreateUserUseCase } from '../use-cases/contract/icreate-user.use-case'
 import { IUpdateUserUseCase } from '../use-cases/contract/iupdate-user.use-case';
 import { IGetOneUserUseCase } from '../use-cases/contract/iget-one-user.use-case';
 import { IGetAllUserUseCase } from '../use-cases/contract/iget-all-user.use-case';
+import { IDeleteUserUseCase } from '../use-cases/contract/idelete-user.use-case';
 
 @Controller('user')
 export class UserController {
@@ -13,7 +14,8 @@ export class UserController {
     private readonly createUserUseCase: ICreateUserUseCase,
     private readonly updateUserUseCase: IUpdateUserUseCase,
     private readonly getAllUserUseCase: IGetAllUserUseCase,
-  private readonly getOneUserUseCase: IGetOneUserUseCase
+    private readonly getOneUserUseCase: IGetOneUserUseCase,
+    private readonly deleteUserUseCase: IDeleteUserUseCase
   ) {}
 
   @Post()
@@ -32,12 +34,12 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.getOneUserUseCase.execute(+id);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.deleteUserUseCase.execute(+id);
+  }
 }

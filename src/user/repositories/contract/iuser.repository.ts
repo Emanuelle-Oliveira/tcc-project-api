@@ -7,4 +7,5 @@ export abstract class IUserRepository {
   abstract update(id: number, dto: IUpdateUserPayload): Promise<UserEntity>;
   abstract getAll(): Promise<UserEntity[]>;
   abstract getOne(id: number): Promise<UserEntity>;
+  abstract delete(id: number): Promise<UserEntity>;
 }
