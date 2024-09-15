@@ -1,9 +1,7 @@
 import { Injectable, Provider } from '@nestjs/common';
-import { ICreateUserPayload } from '../shared/icreate-user-payload';
 import { UserEntity } from '../entities/user.entity';
-import { ICreateUserUseCase } from './contract/icreate-item.use-case';
 import { IUserRepository } from '../repositories/contract/iuser.repository';
-import { IUpdateUserUseCase } from './contract/iupdate-item.use-case';
+import { IUpdateUserUseCase } from './contract/iupdate-user.use-case';
 import { IUpdateUserPayload } from '../shared/iupdate-user-payload';
 
 @Injectable()

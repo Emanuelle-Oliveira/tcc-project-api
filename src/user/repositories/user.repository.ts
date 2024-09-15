@@ -25,12 +25,47 @@ export class UserRepository implements IUserRepository {
   async update(id: number, dto: IUpdateUserPayload): Promise<UserEntity> {
     const updatedUser = await this.prisma.user.update({
       where: {
-        id: Number(id),
+        id: id,
       },
       data: dto,
     });
 
     return this.BuildEntity(updatedUser);
+  }
+
+  async getAll(): Promise<UserEntity[]> {
+    const users = await this.prisma.user.findMany({
+      /*include: {
+        projects: {
+          orderBy: {
+            id: 'asc',
+          },
+        },
+      },*/
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return users.map((user) => this.BuildEntity(user));
+  }
+
+  async getOne(id: number): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      }
+      /*,
+      include: {
+        projects: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },*/
+    });
+
+    if (user) return this.BuildEntity(user);
   }
 
   private BuildEntity(payload: User /*& { projects?: Project[] }*/): UserEntity {

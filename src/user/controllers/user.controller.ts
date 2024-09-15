@@ -2,14 +2,18 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { ICreateUserUseCase } from '../use-cases/contract/icreate-item.use-case';
-import { IUpdateUserUseCase } from '../use-cases/contract/iupdate-item.use-case';
+import { ICreateUserUseCase } from '../use-cases/contract/icreate-user.use-case';
+import { IUpdateUserUseCase } from '../use-cases/contract/iupdate-user.use-case';
+import { IGetOneUserUseCase } from '../use-cases/contract/iget-one-user.use-case';
+import { IGetAllUserUseCase } from '../use-cases/contract/iget-all-user.use-case';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly createUserUseCase: ICreateUserUseCase,
-    private readonly updateUserUseCase: IUpdateUserUseCase
+    private readonly updateUserUseCase: IUpdateUserUseCase,
+    private readonly getAllUserUseCase: IGetAllUserUseCase,
+  private readonly getOneUserUseCase: IGetOneUserUseCase
   ) {}
 
   @Post()
@@ -19,20 +23,19 @@ export class UserController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) : Promise<UserEntity> {
-    return this.updateUserUseCase.execute(id, updateUserDto);
+    return this.updateUserUseCase.execute(+id, updateUserDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-  //
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
-  //
-  //
+  @Get()
+  findAll() {
+    return this.getAllUserUseCase.execute();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.getOneUserUseCase.execute(+id);
+  }
+
   // @Delete(':id')
   // remove(@Param('id') id: string) {
   //   return this.userService.remove(+id);
