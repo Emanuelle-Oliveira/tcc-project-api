@@ -4,6 +4,7 @@ import { IUserRepository } from './contract/iuser.repository';
 import { ICreateUserPayload } from '../shared/icreate-user-payload';
 import { UserEntity } from '../entities/user.entity';
 import { User } from '@prisma/client';
+import { IUpdateUserPayload } from '../shared/iupdate-user-payload';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -19,6 +20,17 @@ export class UserRepository implements IUserRepository {
     });
 
     return this.BuildEntity(user);
+  }
+
+  async update(id: number, dto: IUpdateUserPayload): Promise<UserEntity> {
+    const updatedUser = await this.prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: dto,
+    });
+
+    return this.BuildEntity(updatedUser);
   }
 
   private BuildEntity(payload: User /*& { projects?: Project[] }*/): UserEntity {
