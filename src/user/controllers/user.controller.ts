@@ -29,17 +29,17 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
+  findAll() : Promise<UserEntity[]> {
     return this.getAllUserUseCase.execute();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: number) : Promise<UserEntity> {
     return this.getOneUserUseCase.execute(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: number) : Promise<UserEntity> {
     return this.deleteUserUseCase.execute(+id);
   }
 }

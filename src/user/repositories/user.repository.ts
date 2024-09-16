@@ -3,8 +3,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { IUserRepository } from './contract/iuser.repository';
 import { ICreateUserPayload } from '../shared/icreate-user-payload';
 import { UserEntity } from '../entities/user.entity';
-import { User } from '@prisma/client';
+import { Project, User } from '@prisma/client';
 import { IUpdateUserPayload } from '../shared/iupdate-user-payload';
+import { ProjectEntity } from '../../project/entities/project.entity';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -35,13 +36,13 @@ export class UserRepository implements IUserRepository {
 
   async getAll(): Promise<UserEntity[]> {
     const users = await this.prisma.user.findMany({
-      /*include: {
+      include: {
         projects: {
           orderBy: {
             id: 'asc',
           },
         },
-      },*/
+      },
       orderBy: {
         id: 'asc',
       },
@@ -54,15 +55,14 @@ export class UserRepository implements IUserRepository {
     const user = await this.prisma.user.findUnique({
       where: {
         id: id,
-      }
-      /*,
+      },
       include: {
         projects: {
           orderBy: {
-            order: 'asc',
+            id: 'asc',
           },
         },
-      },*/
+      },
     });
 
     if (user) return this.BuildEntity(user);
@@ -78,16 +78,16 @@ export class UserRepository implements IUserRepository {
     return this.BuildEntity(deletedUser);
   }
 
-  private BuildEntity(payload: User /*& { projects?: Project[] }*/): UserEntity {
+  private BuildEntity(payload: User & { projects?: Project[] }): UserEntity {
     let user = new UserEntity({
       id: payload.id,
       email: payload.email,
       name: payload.name
     });
 
-    /*if (payload.projects) {
+    if (payload.projects) {
       user = user.setProjects(payload.projects.map((i) => new ProjectEntity(i)));
-    }*/
+    }
     return user;
   }
 }
