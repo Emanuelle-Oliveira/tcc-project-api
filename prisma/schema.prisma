@@ -23,10 +23,21 @@ model User {
 }
 
 model Project {
-  id     Int    @id @default(autoincrement())
-  name   String
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Project_User ")
-  userId Int
+  id      Int      @id @default(autoincrement())
+  name    String
+  User    User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Project_User ")
+  userId  Int
+  xtables Xtable[]
 
   @@map("project")
+}
+
+model Xtable {
+  id        Int     @id @default(autoincrement())
+  name      String
+  alias     String
+  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Table_Project ")
+  projectId Int
+
+  @@map("xtable")
 }

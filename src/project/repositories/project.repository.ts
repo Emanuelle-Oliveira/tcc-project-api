@@ -1,10 +1,11 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { IProjectRepository } from './contract/iproject.repository';
-import { ICreateProjectPayload } from '../shared/icreate-project-payload';
 import { IUpdateProjectPayload } from '../shared/iupdate-project-payload';
 import { ProjectEntity } from '../entities/project.entity';
-import { Project } from '@prisma/client';
+import { Project, Xtable } from '@prisma/client';
+import { ICreateProjectPayload } from '../shared/icreate-project-payload';
+import { XtableEntity } from '../../xtable/entities/xtable.entity';
 
 
 @Injectable()
@@ -77,12 +78,18 @@ export class ProjectRepository implements IProjectRepository {
     return this.BuildEntity(deletedProject);
   }
 
-  private BuildEntity(payload: Project): ProjectEntity {
-    return new ProjectEntity({
+  private BuildEntity(payload: Project & { xtables?: Xtable[] }): ProjectEntity {
+    let project = new ProjectEntity({
       id: payload.id,
       name: payload.name,
       userId: payload.userId
     });
+
+    if (payload.xtables) {
+      project = project.setXtables(payload.xtables.map((i) => new XtableEntity(i)));
+    }
+
+    return project;
   }
 }
 
