@@ -9,15 +9,11 @@ import { ProjectEntity } from '../../project/entities/project.entity';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
-  constructor(private readonly prisma: PrismaService) {
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: ICreateUserPayload): Promise<UserEntity> {
     const user = await this.prisma.user.create({
-      data: {
-        email: dto.email,
-        name: dto.name
-      },
+      data: dto,
     });
 
     return this.BuildEntity(user);
@@ -82,11 +78,13 @@ export class UserRepository implements IUserRepository {
     let user = new UserEntity({
       id: payload.id,
       email: payload.email,
-      name: payload.name
+      name: payload.name,
     });
 
     if (payload.projects) {
-      user = user.setProjects(payload.projects.map((i) => new ProjectEntity(i)));
+      user = user.setProjects(
+        payload.projects.map((i) => new ProjectEntity(i)),
+      );
     }
     return user;
   }

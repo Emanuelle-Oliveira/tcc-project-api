@@ -7,18 +7,13 @@ import { Project, Xtable } from '@prisma/client';
 import { ICreateProjectPayload } from '../shared/icreate-project-payload';
 import { XtableEntity } from '../../xtable/entities/xtable.entity';
 
-
 @Injectable()
 export class ProjectRepository implements IProjectRepository {
-  constructor(private readonly prisma: PrismaService) {
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: ICreateProjectPayload): Promise<ProjectEntity> {
     const project = await this.prisma.project.create({
-      data: {
-        name: dto.name,
-        userId: dto.userId
-      },
+      data: dto,
     });
 
     return this.BuildEntity(project);
@@ -49,7 +44,7 @@ export class ProjectRepository implements IProjectRepository {
     const project = await this.prisma.project.findUnique({
       where: {
         id: id,
-      }
+      },
     });
 
     if (project) return this.BuildEntity(project);
@@ -78,15 +73,19 @@ export class ProjectRepository implements IProjectRepository {
     return this.BuildEntity(deletedProject);
   }
 
-  private BuildEntity(payload: Project & { xtables?: Xtable[] }): ProjectEntity {
+  private BuildEntity(
+    payload: Project & { xtables?: Xtable[] },
+  ): ProjectEntity {
     let project = new ProjectEntity({
       id: payload.id,
       name: payload.name,
-      userId: payload.userId
+      userId: payload.userId,
     });
 
     if (payload.xtables) {
-      project = project.setXtables(payload.xtables.map((i) => new XtableEntity(i)));
+      project = project.setXtables(
+        payload.xtables.map((i) => new XtableEntity(i)),
+      );
     }
 
     return project;

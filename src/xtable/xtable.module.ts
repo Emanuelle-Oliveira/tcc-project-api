@@ -17,10 +17,16 @@ import { DeleteXtableUseCaseProvider } from './use-cases/delete-xtable.use-case'
     GetAllXtableUseCaseProvider,
     GetOneXtableUseCaseProvider,
     GetByProjectXtableUseCaseProvider,
-    DeleteXtableUseCaseProvider
+    DeleteXtableUseCaseProvider,
   ],
   exports: [
-    XtableRepositoryProvider
-  ]
+    XtableRepositoryProvider,
+    CreateXtableUseCaseProvider,
+    UpdateXtableUseCaseProvider,
+    GetAllXtableUseCaseProvider,
+    GetOneXtableUseCaseProvider,
+    GetByProjectXtableUseCaseProvider,
+    DeleteXtableUseCaseProvider,
+  ],
 })
 export class XtableModule {}

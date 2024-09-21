@@ -2,23 +2,19 @@ import { Provider } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ICreateXtablePayload } from '../shared/icreate-xtable-payload';
 import { IUpdateXtablePayload } from '../shared/iupdate-xtable-payload';
-import { Xtable } from '@prisma/client';
+import { Xcolumn, Xtable } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { XtableEntity } from '../entities/xtable.entity';
 import { IXtableRepository } from './contract/ixtable.repository';
+import { XcolumnEntity } from '../../xcolumn/entities/xcolumn.entity';
 
 @Injectable()
 export class XtableRepository implements IXtableRepository {
-  constructor(private readonly prisma: PrismaService) {
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: ICreateXtablePayload): Promise<XtableEntity> {
     const xtable = await this.prisma.xtable.create({
-      data: {
-        name: dto.name,
-        alias: dto.alias,
-        projectId: dto.projectId
-      },
+      data: dto,
     });
 
     return this.BuildEntity(xtable);
@@ -49,7 +45,7 @@ export class XtableRepository implements IXtableRepository {
     const xtable = await this.prisma.xtable.findUnique({
       where: {
         id: id,
-      }
+      },
     });
 
     if (xtable) return this.BuildEntity(xtable);
@@ -78,13 +74,23 @@ export class XtableRepository implements IXtableRepository {
     return this.BuildEntity(deletedXtable);
   }
 
-  private BuildEntity(payload: Xtable): XtableEntity {
-    return new XtableEntity({
+  private BuildEntity(
+    payload: Xtable & { xcolumns?: Xcolumn[] },
+  ): XtableEntity {
+    let table = new XtableEntity({
       id: payload.id,
       name: payload.name,
       alias: payload.alias,
-      projectId: payload.projectId
+      projectId: payload.projectId,
     });
+
+    if (payload.xcolumns) {
+      table = table.setXcolumns(
+        payload.xcolumns.map((i) => new XcolumnEntity(i)),
+      );
+    }
+
+    return table;
   }
 }
 
