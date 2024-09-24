@@ -1,4 +1,4 @@
-import { DataType } from '@prisma/client';
+import { DataType } from '../type/data-type/data-type.type';
 
 export interface ICreateXcolumnPayload {
   name: string;

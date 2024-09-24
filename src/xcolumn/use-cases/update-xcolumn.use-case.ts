@@ -2,7 +2,7 @@ import { Injectable, Provider } from '@nestjs/common';
 import { XcolumnEntity } from '../entities/xcolumn.entity';
 import { IXcolumnRepository } from '../repositories/contract/ixcolumn.repository';
 import { IUpdateXcolumnUseCase } from './contract/iupdate-xcolumn.use-case';
-import { IUpdateXcolumnPayload } from '../shared/iupdate-xcolumnpayload';
+import { IUpdateXcolumnPayload } from '../shared/iupdate-xcolumn-payload';
 
 @Injectable()
 export class UpdateXcolumnUseCase implements IUpdateXcolumnUseCase {

@@ -3,8 +3,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { IXcolumnRepository } from './contract/ixcolumn.repository';
 import { ICreateXcolumnPayload } from '../shared/icreate-xcolumn-payload';
 import { XcolumnEntity } from '../entities/xcolumn.entity';
-import { IUpdateXcolumnPayload } from '../shared/iupdate-xcolumnpayload';
 import { Xcolumn } from '@prisma/client';
+import { IUpdateXcolumnPayload } from '../shared/iupdate-xcolumn-payload';
 
 @Injectable()
 export class XcolumnRepository implements IXcolumnRepository {

@@ -1,6 +1,6 @@
 import { XcolumnEntity } from '../../entities/xcolumn.entity';
 import { ICreateXcolumnPayload } from '../../shared/icreate-xcolumn-payload';
-import { IUpdateXcolumnPayload } from '../../shared/iupdate-xcolumnpayload';
+import { IUpdateXcolumnPayload } from '../../shared/iupdate-xcolumn-payload';
 
 export abstract class IXcolumnRepository {
   abstract create(dto: ICreateXcolumnPayload): Promise<XcolumnEntity>;

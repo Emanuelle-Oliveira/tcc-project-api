@@ -1,5 +1,5 @@
-import { IUpdateXcolumnPayload } from '../shared/iupdate-xcolumnpayload';
-import { DataType } from '@prisma/client';
+import { DataType } from '../type/data-type/data-type.type';
+import { IUpdateXcolumnPayload } from '../shared/iupdate-xcolumn-payload';
 
 export class UpdateXcolumnDto implements IUpdateXcolumnPayload {
   name: string;

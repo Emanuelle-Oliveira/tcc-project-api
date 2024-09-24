@@ -32,6 +32,13 @@ export class ProjectRepository implements IProjectRepository {
 
   async getAll(): Promise<ProjectEntity[]> {
     const projects = await this.prisma.project.findMany({
+      include: {
+        xtables: {
+          orderBy: {
+            id: 'asc',
+          },
+        },
+      },
       orderBy: {
         id: 'asc',
       },
@@ -45,6 +52,13 @@ export class ProjectRepository implements IProjectRepository {
       where: {
         id: id,
       },
+      include: {
+        xtables: {
+          orderBy: {
+            id: 'asc',
+          },
+        },
+      },
     });
 
     if (project) return this.BuildEntity(project);
@@ -54,6 +68,13 @@ export class ProjectRepository implements IProjectRepository {
     const projects = await this.prisma.project.findMany({
       where: {
         userId: userId,
+      },
+      include: {
+        xtables: {
+          orderBy: {
+            id: 'asc',
+          },
+        },
       },
       orderBy: {
         id: 'asc',
