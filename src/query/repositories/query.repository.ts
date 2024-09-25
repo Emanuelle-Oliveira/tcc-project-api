@@ -11,7 +11,12 @@ export class QueryRepository implements IQueryRepository {
 
   async create(dto: ICreateQueryPayload): Promise<QueryEntity> {
     const query = await this.prisma.query.create({
-      data: dto,
+      data: {
+        name: dto.name,
+        dbType: dto.dbType,
+        query: dto.query,
+        mainTableId: dto.mainTableId,
+      },
     });
 
     return this.BuildEntity(query);

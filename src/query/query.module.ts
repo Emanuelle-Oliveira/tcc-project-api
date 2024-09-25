@@ -5,11 +5,15 @@ import { CreateQueryUseCaseProvider } from './use-cases/create-query.use-case';
 import { GetAllQueryUseCaseProvider } from './use-cases/get-all-query.use-case';
 import { GetOneQueryUseCaseProvider } from './use-cases/get-one-query.use-case';
 import { DeleteQueryUseCaseProvider } from './use-cases/delete-query.use-case';
+import { XtableRepositoryProvider } from '../xtable/repositories/xtable.repository';
+import { XcolumnRepositoryProvider } from '../xcolumn/repositories/xcolumn.repository';
 
 @Module({
   controllers: [QueryController],
   providers: [
     QueryRepositoryProvider,
+    XtableRepositoryProvider,
+    XcolumnRepositoryProvider,
     CreateQueryUseCaseProvider,
     GetAllQueryUseCaseProvider,
     GetOneQueryUseCaseProvider,
@@ -17,6 +21,8 @@ import { DeleteQueryUseCaseProvider } from './use-cases/delete-query.use-case';
   ],
   exports: [
     QueryRepositoryProvider,
+    XtableRepositoryProvider,
+    XcolumnRepositoryProvider,
     CreateQueryUseCaseProvider,
     GetAllQueryUseCaseProvider,
     GetOneQueryUseCaseProvider,
