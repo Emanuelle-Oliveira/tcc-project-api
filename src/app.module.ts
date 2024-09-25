@@ -7,9 +7,10 @@ import { ProjectModule } from './project/project.module';
 import { XtableModule } from './xtable/xtable.module';
 import { XcolumnModule } from './xcolumn/xcolumn.module';
 import { RelationshipModule } from './relationship/relationship.module';
+import { QueryModule } from './query/query.module';
 
 @Module({
-  imports: [PrismaModule, UserModule, ProjectModule, XtableModule, XcolumnModule, RelationshipModule],
+  imports: [PrismaModule, UserModule, ProjectModule, XtableModule, XcolumnModule, RelationshipModule, QueryModule],
   controllers: [AppController],
   providers: [AppService],
 })

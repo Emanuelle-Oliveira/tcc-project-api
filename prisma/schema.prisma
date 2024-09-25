@@ -83,6 +83,7 @@ model Relationship {
 
 model Query {
   id          Int      @id @default(autoincrement())
+  name        String?
   query       String
   dbType      DbType   @default(SqlServer)
   Xtable      Xtable   @relation(fields: [mainTableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Query_Table")
