@@ -7,4 +7,6 @@ export interface ICreateQueryPayload {
   query: string;
   mainTableId: number;
   tables: Table[];
+  conditions: Table[];
+  ordinations: Table[];
 }

@@ -8,4 +8,6 @@ export class CreateQueryDto implements ICreateQueryPayload {
   query: string;
   mainTableId: number;
   tables: Table[];
+  conditions: Table[];
+  ordinations: Table[];
 }
