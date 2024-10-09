@@ -42,43 +42,60 @@ model Xtable {
   alias               String
   Project             Project        @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Table_Project")
   projectId           Int
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
   xcolumns            Xcolumn[]
   queries             Query[]
   firstRelationships  Relationship[] @relation("FirstTable")
   secondRelationships Relationship[] @relation("SecondTable")
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   @@map("xtable")
 }
 
 model Xcolumn {
-  id           Int      @id @default(autoincrement())
-  name         String
-  alias        String
-  isForeignKey Boolean  @default(false)
-  isPrimaryKey Boolean  @default(false)
-  dataType     DataType @default(String)
-  Xtable       Xtable   @relation(fields: [xtableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Column_Table")
-  xtableId     Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                Int           @id @default(autoincrement())
+  name              String
+  alias             String
+  isForeignKey      Boolean       @default(false)
+  isPrimaryKey      Boolean       @default(false)
+  dataType          DataType      @default(String)
+  Xtable            Xtable        @relation(fields: [xtableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Column_Table")
+  xtableId          Int
+  firstRelatedKeys  RelatedKeys[] @relation("FirstColumn")
+  secondRelatedKeys RelatedKeys[] @relation("SecondColumn")
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 
   @@map("xcolumn")
 }
 
 model Relationship {
-  id                     Int         @id @default(autoincrement())
-  firstTableCardinality  Cardinality @default(C11)
-  secondTableCardinality Cardinality @default(C11)
-  XFirstTable            Xtable      @relation("FirstTable", fields: [firstTableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Relationship_FirstTable")
+  id                     Int           @id @default(autoincrement())
+  firstTableCardinality  Cardinality   @default(C11)
+  secondTableCardinality Cardinality   @default(C11)
+  XFirstTable            Xtable        @relation("FirstTable", fields: [firstTableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Relationship_FirstTable")
   firstTableId           Int
-  XSecondTable           Xtable      @relation("SecondTable", fields: [secondTableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Relationship_SecondTable")
+  XSecondTable           Xtable        @relation("SecondTable", fields: [secondTableId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Relationship_SecondTable")
   secondTableId          Int
-  createdAt              DateTime    @default(now())
-  updatedAt              DateTime    @updatedAt
+  RelatedKeys            RelatedKeys[]
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
 
   @@map("relationship")
+}
+
+model RelatedKeys {
+  id             Int          @id @default(autoincrement())
+  XFirstColumn   Xcolumn      @relation("FirstColumn", fields: [firstColumnId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_RelatedKey_FirstColumn")
+  firstColumnId  Int
+  XSecondColumn  Xcolumn      @relation("SecondColumn", fields: [secondColumnId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_RelatedKey_SecondColumn")
+  secondColumnId Int
+  Relationship   Relationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_RelatedKeys_Relationship")
+  relationshipId Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("relatedkeys")
 }
 
 model Query {
