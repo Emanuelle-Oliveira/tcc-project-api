@@ -3,15 +3,29 @@ import { RelationshipEntity } from '../entities/relationship.entity';
 import { ICreateRelationshipUseCase } from './contract/icreate-relationship.use-case';
 import { IRelationshipRepository } from '../repositories/contract/irelationship.repository';
 import { Injectable, Provider } from '@nestjs/common';
+import { IRelatedKeysRepository } from '../../related-keys/repositories/contract/irelated-keys.repository';
 
 @Injectable()
 export class CreateRelationshipUseCase implements ICreateRelationshipUseCase {
   constructor(
     private readonly relationshipRepository: IRelationshipRepository,
+    private readonly relatedkeysRepository: IRelatedKeysRepository,
   ) {}
 
   async execute(dto: ICreateRelationshipPayload): Promise<RelationshipEntity> {
-    return this.relationshipRepository.create(dto);
+    const relationship = await this.relationshipRepository.create(dto);
+
+    const relatedKeys = dto.relatedKeys;
+
+    for (const relatedKey of relatedKeys) {
+      await this.relatedkeysRepository.create({
+        relationshipId: relationship.id,
+        firstColumnId: relatedKey.firstColumnId,
+        secondColumnId: relatedKey.secondColumnId,
+      });
+    }
+
+    return relationship;
   }
 }
 

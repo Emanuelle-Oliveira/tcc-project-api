@@ -14,7 +14,10 @@ export abstract class IRelationshipRepository {
 
   abstract getOne(id: number): Promise<RelationshipEntity>;
 
-  abstract getByFirstTable(firstTableId: number): Promise<RelationshipEntity[]>;
+  abstract getByTables(
+    firstTableId: number,
+    secondTableId: number,
+  ): Promise<RelationshipEntity[]>;
 
   abstract delete(id: number): Promise<RelationshipEntity>;
 }

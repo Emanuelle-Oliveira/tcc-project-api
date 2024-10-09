@@ -4,7 +4,10 @@ import { IRelationshipRepository } from './contract/irelationship.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { RelationshipEntity } from '../entities/relationship.entity';
 import { IUpdateRelationshipPayload } from '../shared/iupdate-relationship-payload';
-import { Relationship } from '@prisma/client';
+import { RelatedKeys, Relationship, Xcolumn } from '@prisma/client';
+import { Cardinality } from '../type/cardinality/cardinality.type';
+import { XcolumnEntity } from '../../xcolumn/entities/xcolumn.entity';
+import { RelatedKeysEntity } from '../../related-keys/entities/related-keys.entity';
 
 @Injectable()
 export class RelationshipRepository implements IRelationshipRepository {
@@ -12,7 +15,12 @@ export class RelationshipRepository implements IRelationshipRepository {
 
   async create(dto: ICreateRelationshipPayload): Promise<RelationshipEntity> {
     const relationship = await this.prisma.relationship.create({
-      data: dto,
+      data: {
+        firstTableId: dto.firstTableId,
+        secondTableId: dto.secondTableId,
+        firstTableCardinality: dto.firstTableCardinality,
+        secondTableCardinality: dto.secondTableCardinality,
+      },
     });
 
     return this.BuildEntity(relationship);
@@ -52,10 +60,14 @@ export class RelationshipRepository implements IRelationshipRepository {
     if (relationship) return this.BuildEntity(relationship);
   }
 
-  async getByFirstTable(firstTableId: number): Promise<RelationshipEntity[]> {
+  async getByTables(
+    firstTableId: number,
+    secondTableId: number,
+  ): Promise<RelationshipEntity[]> {
     const relationships = await this.prisma.relationship.findMany({
       where: {
         firstTableId: firstTableId,
+        secondTableId: secondTableId,
       },
       orderBy: {
         id: 'asc',
@@ -75,14 +87,24 @@ export class RelationshipRepository implements IRelationshipRepository {
     return this.BuildEntity(deletedRelationship);
   }
 
-  private BuildEntity(payload: Relationship): RelationshipEntity {
-    return new RelationshipEntity({
+  private BuildEntity(
+    payload: Relationship & { relatedKeys?: RelatedKeys[] },
+  ): RelationshipEntity {
+    let relationship = new RelationshipEntity({
       id: payload.id,
       firstTableId: payload.firstTableId,
       secondTableId: payload.secondTableId,
       firstTableCardinality: payload.firstTableCardinality,
       secondTableCardinality: payload.secondTableCardinality,
     });
+
+    if (payload.relatedKeys) {
+      relationship = relationship.setRelatedKeys(
+        payload.relatedKeys.map((i) => new RelatedKeysEntity(i)),
+      );
+    }
+
+    return relationship;
   }
 }
 

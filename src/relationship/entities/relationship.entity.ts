@@ -1,4 +1,6 @@
 import { Cardinality } from '../type/cardinality/cardinality.type';
+import { RelatedKeysEntity } from '../../related-keys/entities/related-keys.entity';
+import { XcolumnEntity } from '../../xcolumn/entities/xcolumn.entity';
 
 export class RelationshipEntity {
   id: number;
@@ -6,6 +8,7 @@ export class RelationshipEntity {
   secondTableId: number;
   firstTableCardinality: Cardinality;
   secondTableCardinality: Cardinality;
+  relatedKeys?: RelatedKeysEntity[] | null;
 
   constructor(payload: {
     id: number;
@@ -19,5 +22,10 @@ export class RelationshipEntity {
     this.secondTableId = payload.secondTableId;
     this.firstTableCardinality = payload.firstTableCardinality;
     this.secondTableCardinality = payload.secondTableCardinality;
+  }
+
+  setRelatedKeys(relatedKeys: RelatedKeysEntity[]) {
+    this.relatedKeys = relatedKeys;
+    return this;
   }
 }

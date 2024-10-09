@@ -15,7 +15,7 @@ import { IGetAllRelationshipUseCase } from '../use-cases/contract/iget-all-relat
 import { IGetOneRelationshipUseCase } from '../use-cases/contract/iget-one-relationship.use-case';
 import { IDeleteRelationshipUseCase } from '../use-cases/contract/idelete-relationship.use-case';
 import { RelationshipEntity } from '../entities/relationship.entity';
-import { IGetByFirstTableRelationshipUseCase } from '../use-cases/contract/iget-by-first-table-relationship.use-case';
+import { IGetByTablesRelationshipUseCase } from '../use-cases/contract/iget-by-tables-relationship.use-case';
 
 @Controller('relationship')
 export class RelationshipController {
@@ -24,7 +24,7 @@ export class RelationshipController {
     private readonly updateRelationshipUseCase: IUpdateRelationshipUseCase,
     private readonly getAllRelationshipUseCase: IGetAllRelationshipUseCase,
     private readonly getOneRelationshipUseCase: IGetOneRelationshipUseCase,
-    private readonly getByFirstTableRelationshipUseCase: IGetByFirstTableRelationshipUseCase,
+    private readonly getByTablesRelationshipUseCase: IGetByTablesRelationshipUseCase,
     private readonly deleteRelationshipUseCase: IDeleteRelationshipUseCase,
   ) {}
 
@@ -53,11 +53,15 @@ export class RelationshipController {
     return this.getOneRelationshipUseCase.execute(+id);
   }
 
-  @Get('table/:firstTableId')
-  findByFirstTable(
+  @Get('table/:firstTableId/:secondTableId')
+  findByTables(
     @Param('firstTableId') firstTableId: number,
+    @Param('secondTableId') secondTableId: number,
   ): Promise<RelationshipEntity[]> {
-    return this.getByFirstTableRelationshipUseCase.execute(+firstTableId);
+    return this.getByTablesRelationshipUseCase.execute(
+      +firstTableId,
+      +secondTableId,
+    );
   }
 
   @Delete(':id')
