@@ -4,9 +4,7 @@ import { IRelationshipRepository } from './contract/irelationship.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { RelationshipEntity } from '../entities/relationship.entity';
 import { IUpdateRelationshipPayload } from '../shared/iupdate-relationship-payload';
-import { RelatedKeys, Relationship, Xcolumn } from '@prisma/client';
-import { Cardinality } from '../type/cardinality/cardinality.type';
-import { XcolumnEntity } from '../../xcolumn/entities/xcolumn.entity';
+import { RelatedKeys, Relationship } from '@prisma/client';
 import { RelatedKeysEntity } from '../../related-keys/entities/related-keys.entity';
 
 @Injectable()

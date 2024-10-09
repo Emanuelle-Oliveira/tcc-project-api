@@ -7,7 +7,6 @@ import { GetOneQueryUseCaseProvider } from './use-cases/get-one-query.use-case';
 import { DeleteQueryUseCaseProvider } from './use-cases/delete-query.use-case';
 import { XtableRepositoryProvider } from '../xtable/repositories/xtable.repository';
 import { XcolumnRepositoryProvider } from '../xcolumn/repositories/xcolumn.repository';
-import { RelationshipEntity } from '../relationship/entities/relationship.entity';
 import { RelationshipRepositoryProvider } from '../relationship/repositories/relationship.repository';
 import { RelatedKeysRepositoryProvider } from '../related-keys/repositories/related-key.repository';
 

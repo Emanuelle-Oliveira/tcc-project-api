@@ -1,6 +1,5 @@
 import { Cardinality } from '../type/cardinality/cardinality.type';
 import { RelatedKeysEntity } from '../../related-keys/entities/related-keys.entity';
-import { XcolumnEntity } from '../../xcolumn/entities/xcolumn.entity';
 
 export class RelationshipEntity {
   id: number;
