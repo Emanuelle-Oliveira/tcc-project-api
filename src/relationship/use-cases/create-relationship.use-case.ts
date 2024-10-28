@@ -17,13 +17,18 @@ export class CreateRelationshipUseCase implements ICreateRelationshipUseCase {
 
     const relatedKeys = dto.relatedKeys;
 
+    const relatedKeysList = [];
+
     for (const relatedKey of relatedKeys) {
-      await this.relatedkeysRepository.create({
+      const relatedKeysEntity = await this.relatedkeysRepository.create({
         relationshipId: relationship.id,
         firstColumnId: relatedKey.firstColumnId,
         secondColumnId: relatedKey.secondColumnId,
       });
+      relatedKeysList.push(relatedKeysEntity);
     }
+
+    relationship.setRelatedKeys(relatedKeysList);
 
     return relationship;
   }

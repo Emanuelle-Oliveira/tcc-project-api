@@ -53,6 +53,13 @@ export class RelationshipRepository implements IRelationshipRepository {
       where: {
         id: id,
       },
+      include: {
+        relatedKeys: {
+          orderBy: {
+            id: 'asc',
+          },
+        },
+      },
     });
 
     if (relationship) return this.BuildEntity(relationship);
@@ -95,6 +102,8 @@ export class RelationshipRepository implements IRelationshipRepository {
       firstTableCardinality: payload.firstTableCardinality,
       secondTableCardinality: payload.secondTableCardinality,
     });
+
+    console.log(payload);
 
     if (payload.relatedKeys) {
       relationship = relationship.setRelatedKeys(

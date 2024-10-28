@@ -2,12 +2,13 @@ import { Provider } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ICreateXtablePayload } from '../shared/icreate-xtable-payload';
 import { IUpdateXtablePayload } from '../shared/iupdate-xtable-payload';
-import { Relationship, Xcolumn, Xtable } from '@prisma/client';
+import { RelatedKeys, Relationship, Xcolumn, Xtable } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { XtableEntity } from '../entities/xtable.entity';
 import { IXtableRepository } from './contract/ixtable.repository';
 import { XcolumnEntity } from '../../xcolumn/entities/xcolumn.entity';
 import { RelationshipEntity } from '../../relationship/entities/relationship.entity';
+import { RelatedKeysEntity } from '../../related-keys/entities/related-keys.entity';
 
 @Injectable()
 export class XtableRepository implements IXtableRepository {
@@ -74,10 +75,24 @@ export class XtableRepository implements IXtableRepository {
           orderBy: {
             id: 'asc',
           },
+          include: {
+            relatedKeys: {
+              orderBy: {
+                id: 'asc',
+              },
+            },
+          },
         },
         secondRelationships: {
           orderBy: {
             id: 'asc',
+          },
+          include: {
+            relatedKeys: {
+              orderBy: {
+                id: 'asc',
+              },
+            },
           },
         },
       },
@@ -101,10 +116,24 @@ export class XtableRepository implements IXtableRepository {
           orderBy: {
             id: 'asc',
           },
+          include: {
+            relatedKeys: {
+              orderBy: {
+                id: 'asc',
+              },
+            },
+          },
         },
         secondRelationships: {
           orderBy: {
             id: 'asc',
+          },
+          include: {
+            relatedKeys: {
+              orderBy: {
+                id: 'asc',
+              },
+            },
           },
         },
       },
@@ -128,9 +157,9 @@ export class XtableRepository implements IXtableRepository {
 
   private BuildEntity(
     payload: Xtable & { xcolumns?: Xcolumn[] } & {
-      firstRelationships?: Relationship[];
+      firstRelationships?: (Relationship & { relatedKeys?: RelatedKeys[] })[];
     } & {
-      secondRelationships?: Relationship[];
+      secondRelationships?: (Relationship & { relatedKeys?: RelatedKeys[] })[];
     },
   ): XtableEntity {
     let table = new XtableEntity({
@@ -148,13 +177,33 @@ export class XtableRepository implements IXtableRepository {
 
     if (payload.firstRelationships) {
       table = table.setFirstRelationships(
-        payload.firstRelationships.map((i) => new RelationshipEntity(i)),
+        payload.firstRelationships.map((rel) => {
+          const relationshipEntity = new RelationshipEntity(rel);
+
+          if (rel.relatedKeys) {
+            relationshipEntity.setRelatedKeys(
+              rel.relatedKeys.map((rk) => new RelatedKeysEntity(rk)),
+            );
+          }
+
+          return relationshipEntity;
+        }),
       );
     }
 
     if (payload.secondRelationships) {
       table = table.setSecondRelationships(
-        payload.secondRelationships.map((i) => new RelationshipEntity(i)),
+        payload.secondRelationships.map((rel) => {
+          const relationshipEntity = new RelationshipEntity(rel);
+
+          if (rel.relatedKeys) {
+            relationshipEntity.setRelatedKeys(
+              rel.relatedKeys.map((rk) => new RelatedKeysEntity(rk)),
+            );
+          }
+
+          return relationshipEntity;
+        }),
       );
     }
 
