@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { ICreateRelatedKeysPayload } from '../shared/icreate-related-keys.payload';
 import { RelatedKeysEntity } from '../entities/related-keys.entity';
 import { IRelatedKeysRepository } from './contract/irelated-keys.repository';
+import { IUpdateRelatedKeysPayload } from '../shared/iupdate-related-keys.payload';
 
 @Injectable()
 export class RelatedKeysRepository implements IRelatedKeysRepository {
@@ -31,14 +32,38 @@ export class RelatedKeysRepository implements IRelatedKeysRepository {
     return relatedKeys.map((relatedKey) => this.BuildEntity(relatedKey));
   }
 
-  async delete(id: number): Promise<RelatedKeysEntity> {
-    const deletedRelatedKeys = await this.prisma.relatedKeys.delete({
+  async update(
+    id: number,
+    dto: IUpdateRelatedKeysPayload,
+  ): Promise<RelatedKeysEntity> {
+    const updatedRelatedKeys = await this.prisma.relatedKeys.update({
       where: {
         id: id,
       },
+      data: dto,
     });
 
-    return this.BuildEntity(deletedRelatedKeys);
+    return this.BuildEntity(updatedRelatedKeys);
+  }
+
+  async deleteByRelationship(
+    relationshipId: number,
+  ): Promise<RelatedKeysEntity[]> {
+    const relatedKeysToDelete = await this.prisma.relatedKeys.findMany({
+      where: {
+        relationshipId: relationshipId,
+      },
+    });
+
+    await this.prisma.relatedKeys.deleteMany({
+      where: {
+        relationshipId: relationshipId,
+      },
+    });
+
+    return relatedKeysToDelete.map((relatedKey) =>
+      this.BuildEntity(relatedKey),
+    );
   }
 
   private BuildEntity(payload: RelatedKeysEntity): RelatedKeysEntity {

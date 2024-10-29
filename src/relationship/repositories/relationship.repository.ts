@@ -32,7 +32,19 @@ export class RelationshipRepository implements IRelationshipRepository {
       where: {
         id: id,
       },
-      data: dto,
+      data: {
+        firstTableId: dto.firstTableId,
+        secondTableId: dto.secondTableId,
+        firstTableCardinality: dto.firstTableCardinality,
+        secondTableCardinality: dto.secondTableCardinality,
+      },
+      include: {
+        relatedKeys: {
+          orderBy: {
+            id: 'asc',
+          },
+        },
+      },
     });
 
     return this.BuildEntity(updatedRelationship);
