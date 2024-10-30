@@ -9,6 +9,7 @@ import { XtableRepositoryProvider } from '../xtable/repositories/xtable.reposito
 import { XcolumnRepositoryProvider } from '../xcolumn/repositories/xcolumn.repository';
 import { RelationshipRepositoryProvider } from '../relationship/repositories/relationship.repository';
 import { RelatedKeysRepositoryProvider } from '../related-keys/repositories/related-key.repository';
+import { GetQueryByProjectUseCaseProvider } from './use-cases/get-query-by-project.use-case';
 
 @Module({
   controllers: [QueryController],
@@ -20,6 +21,7 @@ import { RelatedKeysRepositoryProvider } from '../related-keys/repositories/rela
     RelatedKeysRepositoryProvider,
     CreateQueryUseCaseProvider,
     GetAllQueryUseCaseProvider,
+    GetQueryByProjectUseCaseProvider,
     GetOneQueryUseCaseProvider,
     DeleteQueryUseCaseProvider,
   ],
@@ -31,6 +33,7 @@ import { RelatedKeysRepositoryProvider } from '../related-keys/repositories/rela
     RelatedKeysRepositoryProvider,
     CreateQueryUseCaseProvider,
     GetAllQueryUseCaseProvider,
+    GetQueryByProjectUseCaseProvider,
     GetOneQueryUseCaseProvider,
     DeleteQueryUseCaseProvider,
   ],

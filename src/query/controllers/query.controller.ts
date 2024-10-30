@@ -5,12 +5,14 @@ import { IGetAllQueryUseCase } from '../use-cases/contract/iget-all-query.use-ca
 import { IGetOneQueryUseCase } from '../use-cases/contract/iget-one-query.use-case';
 import { IDeleteQueryUseCase } from '../use-cases/contract/idelete-query.use-case';
 import { QueryEntity } from '../entities/query.entity';
+import { IGetQueryByProjectUseCase } from '../use-cases/contract/iget-query-by-project.use-case';
 
 @Controller('query')
 export class QueryController {
   constructor(
     private readonly createQueryUseCase: ICreateQueryUseCase,
     private readonly getAllQueryUseCase: IGetAllQueryUseCase,
+    private readonly getQueryByProjectUseCase: IGetQueryByProjectUseCase,
     private readonly getOneQueryUseCase: IGetOneQueryUseCase,
     private readonly deleteQueryUseCase: IDeleteQueryUseCase,
   ) {}
@@ -23,6 +25,11 @@ export class QueryController {
   @Get()
   findAll(): Promise<QueryEntity[]> {
     return this.getAllQueryUseCase.execute();
+  }
+
+  @Get(':projectId')
+  findByProject(@Param('projectId') projectId: number): Promise<QueryEntity[]> {
+    return this.getQueryByProjectUseCase.execute(+projectId);
   }
 
   @Get(':id')

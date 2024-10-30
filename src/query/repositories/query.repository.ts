@@ -32,6 +32,21 @@ export class QueryRepository implements IQueryRepository {
     return querys.map((query) => this.BuildEntity(query));
   }
 
+  async getByTables(tableIds: number[]): Promise<QueryEntity[]> {
+    const querys = await this.prisma.query.findMany({
+      where: {
+        mainTableId: {
+          in: tableIds,
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return querys.map((query) => this.BuildEntity(query));
+  }
+
   async getOne(id: number): Promise<QueryEntity> {
     const query = await this.prisma.query.findUnique({
       where: {

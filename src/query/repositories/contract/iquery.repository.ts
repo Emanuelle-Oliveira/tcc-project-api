@@ -8,6 +8,8 @@ export abstract class IQueryRepository {
 
   abstract getOne(id: number): Promise<QueryEntity>;
 
+  abstract getByTables(tableIds: number[]): Promise<QueryEntity[]>;
+
   // abstract getByFirstTable(firstTableId: number): Promise<QueryEntity[]>;
 
   abstract delete(id: number): Promise<QueryEntity>;
