@@ -27,7 +27,7 @@ export class QueryController {
     return this.getAllQueryUseCase.execute();
   }
 
-  @Get(':projectId')
+  @Get('project/:projectId')
   findByProject(@Param('projectId') projectId: number): Promise<QueryEntity[]> {
     return this.getQueryByProjectUseCase.execute(+projectId);
   }
